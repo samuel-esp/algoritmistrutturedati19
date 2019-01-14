@@ -44,15 +44,49 @@ NODO inserimento(NODO nodo, int valore){
 
 }
 
-void cancellazione(NODO nodo){
+void cancellazione_intera(NODO nodo){
 
 	if(nodo == NULL)
 		return;
 
-	cancellazione(nodo->left);
-	cancellazione(nodo->right);
+	cancellazione_intera(nodo->left);
+	cancellazione_intera(nodo->right);
 
 	free(nodo);
+
+}
+
+NODO cancellazione_nodo(NODO nodo, int valore){
+
+	if(nodo == NULL)
+		return nodo;
+
+	if(valore < nodo->info)
+		nodo->left = cancellazione_nodo(nodo->left, valore);
+
+	else if(valore > nodo->info)
+		nodo->right = cancellazione_nodo(nodo->right, valore);
+
+	else{
+
+		if(nodo->left == NULL){
+
+			NODO temp = nodo->right;
+			free(nodo);
+			return temp;
+		}
+		else if(nodo->right == NULL){
+			NODO temp = nodo->left;
+			free(nodo);
+			return temp;
+		}
+
+	NODO temp = RicercaMinimo(nodo->right);
+	nodo->info = temp->info;
+	nodo->right = cancellazione_nodo(nodo->right, valore);
+}
+
+return nodo;
 
 }
 
@@ -63,7 +97,7 @@ void Preordine(NODO nodo){
 
 	printf("%d\n", nodo->info); //PRIMA stampo POI ricorro
 
-	Preoridne(nodo->left); 
+	Preordine(nodo->left); 
 	Preordine(nodo->right);
 }
 
@@ -84,11 +118,11 @@ void Simmetrica(NODO nodo){
 	if(nodo == NULL)
 		return; //nodo vuoto
 
-	Ordine(nodo->left); //ricorro prima sul sinistro
+	Simmetrica(nodo->left); //ricorro prima sul sinistro
 
 	printf("%d\n", nodo->info);
 
-	Ordine(nodo->right); //ricorro sul destro
+	Simmetrica(nodo->right); //ricorro sul destro
 
 }
 
@@ -125,6 +159,7 @@ int RicercaMassimo(NODO nodo){
 
 		if(max<sinistra)
 			max = sinistra;
+		
 		if(max<destra)
 			max = destra;
 
@@ -186,7 +221,7 @@ int completo(NODO nodo){
 		return 1;
 	else
 		return 0;
-	
+
 }
 
 int sommanodi(NODO nodo){
