@@ -1,4 +1,4 @@
-#include <stdio.h>
+##include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
@@ -81,7 +81,7 @@ NODO cancellazione_nodo(NODO nodo, int valore){
 			return temp;
 		}
 
-	NODO temp = RicercaMinimo(nodo->right);
+	NODO temp = InorderMinimum(nodo->right);
 	nodo->info = temp->info;
 	nodo->right = cancellazione_nodo(nodo->right, valore);
 }
@@ -125,6 +125,18 @@ void Simmetrica(NODO nodo){
 	Simmetrica(nodo->right); //ricorro sul destro
 
 }
+
+NODO SinistroPiccolo(NODO node) 
+{ 
+    NODO current = node; 
+  
+    /* loop down to find the leftmost leaf */
+    while (current->left != NULL) 
+        current = current->left; 
+  
+    return current; 
+} 
+
 
 int Ricerca(NODO nodo, int chiave){
 
@@ -252,78 +264,23 @@ int livello(NODO nodo,  int altezza){
 	if(altezza == 0)
 		return 1; //se l'altezza e' 0 abbiamo un solo nodo 
  
-	return livello(nodo->left, altezza) + livello(nodo->right, altezza); //ricorro sui figli fino ad arrivare all'altezza verificata e ritorno il numero dei nodi a tale altezza
+	return livello(nodo->left, altezza-1) + livello(nodo->right, altezza-1); //ricorro sui figli fino ad arrivare all'altezza verificata e ritorno il numero dei nodi a tale altezza
 
 }
 
+int duefigli(NODO nodo){
 
-//====================================================================================================================================//
+	int conteggio;
 
-//INSERISCO IL MENU//
+	if(nodo == NULL)
+		return 0;
 
-int main(){
+	int l = duefigli(nodo->left);
+	int r = duefigli(nodo->right);
 
-	int scelta; //memorizza la scelta che effettuera' l'utente dopo aver visualizzato il menu'
+	if(nodo->left!=NULL && nodo->right!=NULL)
+		return l+r+1;
+	else
+		return l+r
 
-	while(scelta!=0){
 
-		NODO root = NULL;
-
-		printf("\nCHE OPERAZIONE VUOI SVOLGERE?\n\n");
-		printf("[1] -> INSERIMENTO NODO\n");
-		printf("[2] -> STAMPA PREORDER\n");
-		printf("[3] -> STAMPA POSTORDER\n");
-		printf("[4] -> STAMPA SIMMETRICA\n");
-		printf("[5] -> RICERCA\n");
-		printf("[6] -> MASSIMO\n");
-		printf("[0] -> ESCI\n");
-		printf("SCELTA: ");
-		scanf("%d", &scelta);
-
-		if(scelta==1){
-
-		int valore;
-
-		printf("inserisci il valore: ");
-		scanf("%d", &valore);
-
-		root = inserimento(root, valore);
-		}
-
-else	if(scelta==2){
-			//Preordine(root);
-		}
-else	if(scelta==3){
-			Postordine(root);
-		}
-else	if(scelta==4){
-			Ordine(root);
-		}
-else	if(scelta==5){
-
-		int chiave;
-
-		printf("inserisci il valore da cercare: ");
-		scanf("%d", &chiave);
-
-		int risultato = Ricerca(root, chiave);		
-
-		if(risultato==1)
-			printf("ESISTENZA VERIFICATA\n");
-		else
-			printf("ESISTENZA NON VERIFICATA\n");
-
-	}
-else	if(scelta==6){
-
-			int massimo = RicercaMassimo(root);
-
-			printf("IL MASSIMO E': %d\n", massimo);
-
-	}
-
-}
-
-printf("ARRIVEDERCI\n\n");
-
-}
