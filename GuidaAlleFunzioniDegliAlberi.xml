@@ -113,8 +113,9 @@ int sommatuttefoglieric(NODO nodo){
 		return 0;
 
 	if(nodo->left==NULL && nodo->right==NULL)
-		return nodo->info;
-
+		return nodo->info; //in questo caso abbiamo trovato quello che cerchiamo
+	
+	//scorriamo l'albero	
 	return sommatuttefoglieric(nodo->left) + sommatuttefoglieric(nodo->right);
 
 }
