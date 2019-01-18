@@ -1,0 +1,120 @@
+RICORSIONE VERIFICA UNIVERSALE
+
+/*La funzione viene divisa in 2, una funzione verificauniversale() che verifica solo la radice (caso particolare dell'albero), se la radice e' null ritorna o -1 o 0 (dipende dalla richiesta), se non e' null ritorna una seconda funzione verificauniversaleric(), che passa gli stessi parametri ricevuti da verificauniversale(). Questa funzione risolve il tutto per il resto dei casi non particolari*/
+
+1) CASI BASE RELATIVI ALLA FUNZIONE: QUESTI CASI BASE DEVONO FORNIRE TUTTE LE CONTROPROVE DELLA VERIFICA UNIVERSALE, SE UNO DI QUESTI E' VERIFICATO LA FUNZIONE RITORNA 0
+
+2) CASO BASE DI STOP: CASO BASE PARTICOLARE CHE INDICA IL FATTO CHE TU SIA ARRIVATO ALLA FINE DELL'ALBERO, RITORNA 1 
+
+int controllatuttiuguali(NODO nodo, int valore){
+
+
+	if(nodo==NULL)
+		return 0; //l'albero non esiste!
+
+	return controllatuttiugualiric(nodo, valore);
+
+}
+
+
+int controllatuttiugualiric(NODO nodo, int valore){
+
+
+	if(nodo==NULL)
+		return 1; //passo stop, se sei arrivato alla fine allora sai che la condizione e' verificata
+
+	if(nodo->info != valore)
+		return 0; //passo di verifica, se viene contraddetto solo una volta, tutta la funzione termina dando 0
+
+	//passo ricorsivo per scorrere l'albero	
+	return controllatuttiugualiric(nodo->left, valore) && controllatuttiugualiric(nodo->right, valore);
+
+
+}
+
+====================================================================================================================
+
+RICORSIONE VERIFICA ESISTENZIALI
+
+//La funzione viene divisa in 2, una funzione verificaesistenziale() che verifica solo la radice (caso particolare dell'albero), se la radice e' null ritorna o -1 o 0 (dipende dalla richiesta), se non e' null ritorna una seconda funzione verificaesistenzialeric(), che passa gli stessi parametri ricevuti da verificauniversale(). Questa funzione risolve il tutto per il resto dei casi non particolari
+
+1) CASI BASE RELATIVI ALLA FUNZIONE: QUESTI CASI BASE DEVONO FORNIRE TUTTE LE CONTROPROVE DELLA VERIFICA UNIVERSALE, SE UNO DI QUESTI E' VERIFICATO LA FUNZIONE RITORNA 0
+
+2) CASO BASE DI STOP: CASO BASE PARTICOLARE CHE INDICA IL FATTO CHE TU SIA ARRIVATO ALLA FINE DELL'ALBERO, RITORNA 1
+
+int verificaesistenza(NODO nodo, int valore){
+
+	if(nodo==NULL)
+		return 0; //l'albero non esiste!
+
+	return verificaesistenzaric(nodo, valore);
+
+}
+
+int verificaesistenzaric(NODO nodo, int valore){
+
+
+	if(nodo==NULL)
+		return 0; //sei arrivato fino alla fine e non hai trovato nulla
+
+	if(nodo->info==valore)
+		return 1; //hai trovato il valore, la verifica e' soddisfatta
+
+	return verificaesistenzaric(nodo->left, valore) || verificaesistenzaric(nodo->right, valore);
+
+
+} 
+
+====================================================================================================================
+
+RICORSIONE CONTEGGIO
+
+/*Il problema di conteggio ci consente di calcolare quanti elementi dell'albero soddisfano una determinata proprieta', la funzione viene sempre divisa in due seguendo i metodi sopradescritti*/
+
+int contaelementimaggiori(NODO nodo, int valore){
+
+	if(nodo==NULL)
+		return 0; L'albero non esite!
+
+	return contaelementimaggioriric(nodo, valore);
+}
+
+int contaelementimaggioriric(NODO nodo, int valore){
+
+	if(nodo==NULL)
+		return 0; //siamo arrivati alla fine dell'albero, ritorniamo 0 perche' gli elementi da contare sono finiti
+
+	if(nodo->info<=valore)
+		return 0 + contaelementimaggioriric(nodo->left, valore) + contaelementimaggioriric(nodo->right, valore); //questo e' un caso invalidante, tuttavia io l'albero lo devo scorrere fino alla fine quindi le chiamate ricorsive le effettuo ugualmente ma sommo un elemento neutro
+
+	return 1 + contaelementimaggioriric(nodo->left, valore) + contaelementimaggioriric(nodo->right, valore);
+
+
+}
+
+====================================================================================================================
+
+RICORSIONE ACCUMULAZIONE
+
+/*Il problema di conteggio ci consente di calcolare somme o moltiplicazioni, la funzione si puo' spezzare utilizzando i metodi sopradescritti*/
+
+int sommatuttefoglie(NODO nodo){
+
+	if(nodo==NULL)
+		return -1; //l'albero non esiste ritorniamo un valore negativo perche' presupponiamo che l'eventuale albeor abbia tutti elementi positivi
+
+	return sommatuttefoglieric(nodo);
+
+}
+
+int sommatuttefoglieric(NODO nodo){
+
+	if(nodo==NULL)
+		return 0;
+
+	if(nodo->left==NULL && nodo->right==NULL)
+		return nodo->info;
+
+	return sommatuttefoglieric(nodo->left) + sommatuttefoglieric(nodo->right);
+
+}
