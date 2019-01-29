@@ -1,0 +1,249 @@
+#include <stdlib.h>
+#include <stdio.h>
+
+typedef struct nodo_struct nodo;
+typedef struct edge_struct arco;
+
+typedef struct node_elem {
+
+	struct node_elem* prev;
+	struct node_elem* next;
+	nodo*             info;
+
+} nelem;
+
+typedef struct edge_elem {
+
+	struct edge_elem* prev;
+	struct edge_elem* next;
+	arco*             info;
+
+} eelem;  // sta per "edge elem", elemento di una lista di archi
+
+
+typedef struct nodo_struct {
+
+	nelem* pos;    /* puntatore alla mia posizione nella lista dei nodi del grafo */
+	int    id;     /* identificatore del nodo (per l'utente) */
+	int    color;  /* marcatore per ogni uso */
+	eelem* archi;  /* la lista degli archi del nodo */
+
+} nodo;
+
+typedef struct edge_struct {
+
+	eelem* pos;       /* puntatore alla mia posizione nella lista degli archi del grafo */
+	int    id;        /* identificatore del nodo (per l'utente) */
+	nodo*  from;      /* il nodo from */
+	nodo*  to;        /* il nodo to */
+	eelem* frompos;   /* la mia posizione nella lista degli archi del nodo from */
+	eelem* topos;     /* la mia posizione nella lista degli archi del nodo to */
+
+} arco;
+
+typedef struct grafo_struct {
+
+	nelem* nodi;   /* lista dei nodi del grafo */
+	eelem* archi;  /* lista degli archi del grafo */
+	int numero_nodi;
+	int numero_archi;
+	int max_id_nodi;
+	int max_id_archi;
+} grafo;
+
+/* aggiungo un nodo al grafo */
+
+grafo* new_grafo() {
+
+	grafo* g = (grafo*)malloc(sizeof(grafo));
+
+	g->nodi = NULL;
+	g->archi = NULL;
+	g->numero_nodi = 0;
+	g->numero_archi = 0;
+	g->max_id_nodi = 0;
+	g->max_id_archi = 0;
+
+	return g;
+}
+
+nodo* aggiungi_nodo(grafo* g) {
+
+	nodo* n = (nodo*)malloc(sizeof(nodo));
+	// n->id = ++(g->max_id_nodi);
+	n->id = g->max_id_nodi;
+	n->color = 0;
+	g->max_id_nodi++;
+	n->archi = NULL;
+
+	nelem* ne = (nelem*)malloc(sizeof(nelem));
+
+	ne->prev = NULL;
+	ne->info = n;
+	ne->next = g->nodi;
+
+	if(g->nodi != NULL) {
+		g->nodi->prev = ne;
+	} 
+	g->nodi = ne;   // mi metto in testa alla lista dei nodi del grafo
+	n->pos = ne;    // mi memorizzo la mia posizione in lista
+	g->numero_nodi++;
+
+	return n;
+}
+
+eelem* inserisci_arco_in_lista(eelem** pla, arco* a) {
+
+	eelem* e = (eelem*)malloc(sizeof(eelem));
+	e->info = a;
+	e->prev = NULL;
+	e->next = (*pla);
+
+	if( (*pla) != NULL ) {
+		(*pla)->prev = e;
+	}
+	(*pla) = e;
+	return e;
+}
+
+/* aggiunge un arco tra i due nodi specificati */
+
+arco* aggiungi_arco(grafo* g, nodo* from, nodo* to) {
+
+	arco* a = (arco*)malloc(sizeof(arco));
+
+	a->id = g->max_id_archi;
+	g->max_id_archi++;
+	g->numero_archi++;
+
+    a->from = from;
+    a->to = to;
+
+    a->pos = inserisci_arco_in_lista(&(g->archi),a);
+    a->frompos = inserisci_arco_in_lista(&(from->archi),a);
+    a->topos = inserisci_arco_in_lista(&(to->archi),a);
+
+    return a;
+}
+
+nodo* opposto(nodo* n, arco* a) {
+
+	nodo* output = a->from;
+	if ( output == n )
+		output = a->to;
+	return output;
+}
+
+void stampa_grafo(grafo* g) {
+
+    printf("------stampa del grafo------------\n");
+	printf("il grafo ha %d nodi e %d archi\n", 
+			g->numero_nodi,
+			g->numero_archi);
+
+    nelem* ln = g->nodi;
+    while( ln != NULL) {
+
+    	printf("trovato il nodo %d\n", ln->info->id);
+        
+        eelem* la = ln->info->archi;
+        while( la != NULL ) {
+
+            arco* arco_corrente = la->info;
+        	nodo* altro_nodo = opposto(ln->info, arco_corrente);
+        	printf("\ttrovato l'arco %d verso %d\n", 
+        		   arco_corrente->id,
+        		   altro_nodo->id);
+        	la = la->next;
+        }
+        ln = ln->next;
+    }
+    printf("------------------\n");
+
+}
+
+
+//=============================================================================================================================//
+
+//FUNZIONI PER ESERICITARSI//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//=============================================================================================================================//
+
+/*MAIN DEL GRAFO QUI DISEGNATO
+
+		           0 -- 1              7 -- 8      9  
+				   |    |       4      
+				   2 -- 3      / \
+				              5   6 
+
+
+*/
+
+int main() {
+
+	grafo* g = new_grafo();
+
+	nodo* n0 = aggiungi_nodo(g);
+    //printf("ho aggiunto un nodo con id %d\n",n0->id);
+	nodo* n1 = aggiungi_nodo(g);
+    //printf("ho aggiunto un nodo con id %d\n",n1->id);
+    nodo* n2 = aggiungi_nodo(g);
+    //printf("ho aggiunto un nodo con id %d\n",n2->id);
+    nodo* n3 = aggiungi_nodo(g);
+    //printf("ho aggiunto un nodo con id %d\n",n3->id);
+    nodo* n4 = aggiungi_nodo(g);
+    //printf("ho aggiunto un nodo con id %d\n",n4->id);
+    nodo* n5 = aggiungi_nodo(g);
+    //printf("ho aggiunto un nodo con id %d\n",n5->id);
+    nodo* n6 = aggiungi_nodo(g);
+    //printf("ho aggiunto un nodo con id %d\n",n6->id);
+    nodo* n7 = aggiungi_nodo(g);
+    //printf("ho aggiunto un nodo con id %d\n",n7->id);
+    nodo* n8 = aggiungi_nodo(g);
+    //printf("ho aggiunto un nodo con id %d\n",n8->id);
+    nodo* n9 = aggiungi_nodo(g);
+    //printf("ho aggiunto un nodo con id %d\n",n9->id);
+
+    arco* a0 = aggiungi_arco(g,n0,n1); //COMPONENTE 1
+    arco* a1 = aggiungi_arco(g,n0,n2);
+    arco* a2 = aggiungi_arco(g,n1,n3);
+    arco* a3 = aggiungi_arco(g,n2,n3);
+    arco* a4 = aggiungi_arco(g,n4,n5); //COMPONENTE 2
+    arco* a5 = aggiungi_arco(g,n4,n6);
+    arco* a6 = aggiungi_arco(g,n7,n8); //COMPONENTE 4
+    								   //COMPONENTE 5 RAPPRESENTATA DAL SOLO NODO N9	
+
+    stampa_grafo(g);
+
+}
