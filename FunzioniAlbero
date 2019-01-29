@@ -1,0 +1,379 @@
+int verificauno(NODO nodo){
+
+if(nodo!=NULL)
+return (nodo->info==1 && verificauno(nodo->left) && verificauno(nodo->right));
+
+
+}
+
+int nodialtezza(NODO nodo, int altezza){
+
+
+	if(nodo == NULL)
+		return 0; //se la radice e' nulla non abbiamo nodi sul livello iniziale
+
+	if(altezza == 0)
+		return 1; //se l'altezza e' 0 abbiamo un solo nodo 
+ 
+	return nodialtezza(nodo->left, altezza-1) + nodialtezza(nodo->right, altezza-1); //ricorro sui figli fino ad arrivare all'altezza verificata e ritorno il numero dei nodi
+}
+
+int verificaduefigli(NODO nodo, int valore){
+
+	if(nodo==NULL)
+		return 0;
+
+	if(nodo->info==valore && nodo->left!=NULL && nodo->right!=NULL)
+		return 1;
+
+	return verificaduefigli(nodo->left, valore) || verificaduefigli(nodo->right, valore);
+
+}
+
+int nodiduefigli(NODO nodo){
+
+	if(nodo==NULL)
+		return 0;
+
+	return (nodo->left!=NULL && nodo->right!=NULL) + nodiduefigli(nodo->left) + nodiduefigli(nodo->right);
+
+
+}
+
+int contafoglie(NODO nodo){
+
+
+	if(nodo==NULL)
+		return 0;
+
+	if(nodo->left==NULL && nodo->right==NULL)
+		return 1;
+
+	return contafoglie(nodo->left) + contafoglie(nodo->right);
+
+
+}
+
+int contafoglie_altezza(NODO nodo, int altezza){
+
+	if(nodo==NULL)
+		return 0;
+
+	if(altezza==0 && nodo->left==NULL && nodo->right==NULL)
+		return 1;
+
+
+	return contafoglie_altezza(nodo->left, altezza-1) + contafoglie_altezza(nodo->right, altezza-1);
+}
+
+int sommanodi(NODO nodo){
+
+	if(nodo==NULL)
+		return 0;
+
+	return nodo->info + sommanodi(nodo->left) + sommanodi(nodo->right);
+
+
+}
+
+int verificabinaria(NODO nodo){
+
+	if(nodo==NULL)
+		return 0;
+
+	if((nodo->info<nodo->left->info) || (nodo->info>nodo->right->info))
+		return 0;
+
+	return verificabinaria(nodo->left) && verificabinaria(nodo->right);
+}
+
+int sottoalberi(NODO nodo){
+
+	if(nodo==NULL)
+		return 0;
+
+	if(nodo->left==NULL && nodo->right==NULL)
+		return 0;
+
+	if(nodo->left!=NULL || nodo->right!=NULL)
+		return 1 + sottoalberi(nodo->left) + sottoalberi(nodo->right);
+
+}
+
+int quantidispari(NODO nodo){
+
+	if(nodo==NULL)
+		return 0;
+
+	return (nodo->info%2!=0) + quantidispari(nodo->left) + quantidispari(nodo->right);
+}
+
+int verificatuttiuguali(NODO nodo){
+
+	if(nodo==NULL)
+		return 0;
+
+	return (nodo->info == verificatuttiuguali(nodo->left) && nodo->info == verificatuttiuguali(nodo->left));
+
+
+}
+
+int sommafoglie(NODO nodo){
+
+
+	if(nodo==NULL)
+		return 0;
+
+	if(nodo->left==NULL && nodo->right==NULL)
+		return nodo->info;
+
+	return sommafoglie(nodo->left) + sommafoglie(nodo->right); 
+
+
+}
+
+int sommaduefigli(NODO nodo){
+
+	if(nodo==NULL)
+		return 0;
+
+	if(nodo->left==NULL || nodo->right==NULL)
+		return 0;
+
+	return nodo->info + sommaduefigli(nodo->left) + sommaduefigli(nodo->right);
+
+}
+
+int sommatuttinodi(NODO nodo){
+
+	if(nodo==NULL)
+		return 0;
+
+	return nodo->info + sommatuttinodi(nodo->left) + sommatuttinodi(nodo->right);
+
+
+}
+
+int numeronodi(NODO nodo){
+
+	if(nodo==NULL)
+		return 0;
+
+	return 1 + numeronodi(nodo->left) + numeronodi(nodo->right); 
+
+}
+
+int average(NODO nodo){
+	float noditutti = sommatuttinodi(nodo);
+	float numeronoditutti = numeronodi(nodo);
+
+	return noditutti/numeronoditutti;
+
+
+}
+
+int controllaradice(NODO nodo, int valore){
+
+	if(nodo==NULL)
+		return 0;
+
+	return sopranumero(nodo, valore);
+
+
+}
+
+int sopranumero(NODO nodo, int valore){
+
+	if(nodo==NULL)
+		return 1;
+
+	if(nodo->info<valore)
+		return 0;
+
+	return sopranumero(nodo->left, valore) && sopranumero(nodo->right, valore);
+
+
+}
+
+int controllatuttiuguali(NODO nodo, int valore){
+
+
+	if(nodo==NULL)
+		return 0;
+
+	return controllatuttiugualiric(nodo, valore);
+
+}
+
+
+int controllatuttiugualiric(NODO nodo, int valore){
+
+
+	if(nodo==NULL)
+		return 1;
+
+	if(nodo->info != valore)
+		return 0;
+
+	return controllatuttiugualiric(nodo->left, valore) && controllatuttiugualiric(nodo->right, valore);
+
+
+
+}
+
+int profondalbero(NODO nodo){
+
+	if(nodo==NULL)
+		return -1;
+
+	return profondalberoric(nodo);
+
+
+}
+
+int profondalberoric(NODO nodo){
+
+	if(nodo->left==NULL && nodo->right==NULL)
+		return 0;
+
+	int l = 1 + profondalberoric(nodo->left);
+	int r = 1 + profondalberoric(nodo->right);
+
+	if(l>r)
+		return l;
+		else
+			return r; 
+
+}
+
+int contaelementi(NODO nodo){
+
+	if(nodo==NULL)
+		return 0;
+
+	return 1 + contaelementi(nodo->left) + contaelementi(nodo->right);
+
+
+
+}
+
+int contaelementimaggiori(NODO nodo, int valore){
+
+	if(nodo==NULL)
+		return 0;
+
+	return contaelementimaggioriric(nodo, valore);
+}
+
+int contaelementimaggioriric(NODO nodo, int valore){
+
+	if(nodo==NULL)
+		return 0;
+
+	if(nodo->info<=valore)
+		return 0 + contaelementimaggioriric(nodo->left, valore) + contaelementimaggioriric(nodo->right, valore);
+
+	return 1 + contaelementimaggioriric(nodo->left, valore) + contaelementimaggioriric(nodo->right, valore);
+
+
+}
+
+int altezzaelemento(NODO nodo, int valore){
+
+	if(nodo==NULL)
+		return -1;
+
+	return altezzaelementoric(nodo, valore);
+
+
+}
+
+int altezzaelementoric(NODO nodo, int valore){
+
+}
+
+int verificaesistenza(NODO nodo, int valore){
+
+	if(nodo==NULL)
+		return 0;
+
+	return verificaesistenzaric(nodo, valore);
+
+}
+
+int verificaesistenzaric(NODO nodo, int valore){
+
+
+	if(nodo==NULL)
+		return 0;
+
+	if(nodo->info==valore)
+		return 1;
+
+	return verificaesistenzaric(nodo->left, valore) || verificaesistenzaric(nodo->right, valore);
+
+
+}
+
+int sommatuttefoglie(NODO nodo){
+
+	if(nodo==NULL)
+		return -1; //l'albero non esiste ritorniamo un valore negativo perche' presupponiamo che l'eventuale albeor abbia tutti elementi positivi
+
+	return sommatuttefoglieric(nodo);
+
+}
+
+int sommatuttefoglieric(NODO nodo){
+
+	if(nodo==NULL)
+		return 0;
+
+	if(nodo->left==NULL && nodo->right==NULL)
+		return nodo->info;
+
+	return sommatuttefoglieric(nodo->left) + sommatuttefoglieric(nodo->right);
+
+}
+
+int sommamagg(NODO nodo, int valore){
+
+	if(nodo==NULL)
+		return -1;
+
+	return sommamaggric(nodo, valore);
+
+}
+
+int sommamaggric(NODO nodo, int valore){
+
+	if(nodo==NULL)
+		return 0;
+
+	if(nodo->info>valore)
+		return nodo->info + sommamaggric(nodo->left, valore) + sommamaggric(nodo->right, valore);
+
+	return sommamaggric(nodo->left, valore) + sommamaggric(nodo->right, valore);
+
+}
+
+int tuttidispari(NODO nodo){
+
+
+	if(nodo==NULL)
+		return 0;
+
+	return tuttidspariric(nodo, valore);
+}
+
+int tuttidispariric(NODO, nodo){
+
+	if(nodo==NULL)
+		return 1;
+
+	if(nodo->info%2==0)
+		return 0;
+
+	return tuttidispariric(nodo->left, valore) && tuttidispariric>(nodo->right, valore);
+
+}
