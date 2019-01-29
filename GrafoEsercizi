@@ -202,7 +202,7 @@ void stampa_grafo(grafo* g) {
 
 /*MAIN DEL GRAFO QUI DISEGNATO
 
-		           0 -- 1              7 -- 8      9  
+		                   0 -- 1              7 -- 8      9  
 				   |    |       4      
 				   2 -- 3      / \
 				              5   6 
@@ -247,3 +247,4 @@ int main() {
     stampa_grafo(g);
 
 }
+
